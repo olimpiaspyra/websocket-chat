@@ -18,7 +18,8 @@ socket.on('message', ({ author, content }) => addMessage(author, content));
         else {
             userName = userNameInput.value;
             loginForm.classList.remove('show');
-            messagesSection.classList.add('show');            
+            messagesSection.classList.add('show');
+            socket.emit('join', userName);            
         }
 };
 
