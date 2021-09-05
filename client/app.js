@@ -7,6 +7,9 @@ const messageContentInput = document.getElementById('message-content');
 
 let userName = '';
 
+const socket = io();
+socket.on('message', ({ author, content }) => addMessage(author, content));
+
  const login = (event) => {
      event.preventDefault();
      if (userNameInput.value === '') {
@@ -27,7 +30,7 @@ const addMessage = (author, content) => {
   message.classList.add('message--received');
 
   if (author === userName) {
-    message.classList.add('.message--self');
+    message.classList.add('message--self');
     message.innerHTML = `
     <h3 class="message__author">${userName === author ? 'You' : author }</h3>
     <div class="message__content">
@@ -40,10 +43,14 @@ const addMessage = (author, content) => {
 
 const sendMessage = (event) => {
   event.preventDefault();
-  if (addMessageForm === '') {
-    alert ('Please type your message') 
-  } else {
-    addMessage(userName, messageContentInput.value);
+
+  let messageContent = messageContentInput.value;
+
+    if (!messageContent.length) {
+    alert('You have to type something!');
+    } else {
+    addMessage(userName, messageContent);
+    socket.emit('message', { author: userName, content: messageContentInput.value})
     messageContentInput.value = '';
   }
 }
