@@ -18,7 +18,7 @@ socket.on('message', ({ author, content }) => addMessage(author, content));
         else {
             userName = userNameInput.value;
             loginForm.classList.remove('show');
-            messagesSection.classList.add('show');
+            messagesSection.classList.add('show');            
         }
 };
 
@@ -29,8 +29,7 @@ const addMessage = (author, content) => {
   message.classList.add('message');
   message.classList.add('message--received');
 
-  if (author === userName) {
-    message.classList.add('message--self');
+  if (author === userName) message.classList.add('message--self');
     message.innerHTML = `
     <h3 class="message__author">${userName === author ? 'You' : author }</h3>
     <div class="message__content">
@@ -38,8 +37,7 @@ const addMessage = (author, content) => {
     </div>
   `;
   messagesList.appendChild(message);
-  }
-}
+};
 
 const sendMessage = (event) => {
   event.preventDefault();
