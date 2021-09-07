@@ -25,10 +25,15 @@ io.on('connection', (socket) => {
       socket.broadcast.emit('message', message);
     });  
     socket.on('join', (userName) => {
-       console.log('Oh, I\'ve got new user ' + socket.id);
-      users.push({name: userName, id: socket.id});       
+      console.log('Oh, I\'ve got new user ' + socket.id);
+      users.push({name: userName, id: socket.id}); 
+      socket.broadcast.emit('joinNewUser', {author: 'chatBot', content: `${userName} has joined the conversation!`});      
     });
     socket.on('disconnect', () => { console.log('Oh, socket ' + socket.id + ' has left') });
-    console.log('I\'ve added a listener on message and disconnect events \n');   
+    console.log('I\'ve added a listener on message and disconnect events \n');
+    findUserLeft = users.find(user => user.id === socket.id);
+    if(findUserLeft != undefined) {
+      socket.broadcast.emit('leftUser', {author: 'chatBot', content: `${findUserLeft.userName} has left the conversation... :(`})
+    }   
     users.splice(users.findIndex(user => user.id === socket.id), 1);
   });

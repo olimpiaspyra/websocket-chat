@@ -9,6 +9,8 @@ let userName = '';
 
 const socket = io();
 socket.on('message', ({ author, content }) => addMessage(author, content));
+socket.on('joinNewUser', ({author, content}) => addMessage(author,content));
+socket.on('leftUser', ({author,content}) => addMessage(author, content));
 
  const login = (event) => {
      event.preventDefault();
@@ -31,6 +33,7 @@ const addMessage = (author, content) => {
   message.classList.add('message--received');
 
   if (author === userName) message.classList.add('message--self');
+  if (author === 'chatBot') message.classList.add('message--bot');
     message.innerHTML = `
     <h3 class="message__author">${userName === author ? 'You' : author }</h3>
     <div class="message__content">
