@@ -29,11 +29,13 @@ io.on('connection', (socket) => {
       users.push({name: userName, id: socket.id}); 
       socket.broadcast.emit('joinNewUser', {author: 'chatBot', content: `${userName} has joined the conversation!`});      
     });
-    socket.on('disconnect', () => { console.log('Oh, socket ' + socket.id + ' has left') });
+    socket.on('disconnect', () => { 
+      console.log('Oh, socket ' + socket.id + ' has left') 
     console.log('I\'ve added a listener on message and disconnect events \n');
     findUserLeft = users.find(user => user.id === socket.id);
     if(findUserLeft != undefined) {
-      socket.broadcast.emit('leftUser', {author: 'chatBot', content: `${findUserLeft.userName} has left the conversation... :(`})
+      socket.broadcast.emit('leftUser', {author: 'chatBot', content: `${findUserLeft.name} has left the conversation... :(`})
     }   
     users.splice(users.findIndex(user => user.id === socket.id), 1);
   });
+});
